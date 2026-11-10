@@ -49,6 +49,7 @@ fn pack_files(world_tables: &Option<WorldTables>) -> horizon_world::loot::PackOv
     }
 }
 
+mod air_punch;
 mod advancements;
 mod advancements_screen;
 mod agent;
@@ -13406,6 +13407,7 @@ impl Game<'_> {
                 }
                 // renderPlayerArm
                 let m = to_world
+                    * self.air_punch_offset(hand, left, attack)
                     * horizon_client::first_person::player_arm_pose(left, inverse_height, attack);
                 self.first_person_arm(left, m, packed, &mut out);
                 continue;
@@ -13512,6 +13514,7 @@ impl Game<'_> {
                 _ => ItemPose::Swing,
             };
             let m = to_world
+                * self.air_punch_offset(hand, left, attack)
                 * horizon_client::first_person::item_pose(left, inverse_height, attack, pose);
             // Seeded by the player id plus the context ordinal.
             let (context, seed) = if left {
